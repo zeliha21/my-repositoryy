@@ -1,9 +1,8 @@
- #!/bin/bash -x
-
- yum update -y
- yum install python3 -y
- yum install pip -y
- pip3 install flask
+#!/bin/bash -x
+yum update -y
+yum install python3 -y
+yum install pip -y
+pip3 install flask
 
 FOLDER="https://raw.githubusercontent.com/zeliha21/my-repositoryy/main/001-roman-numerals-converter"
 
