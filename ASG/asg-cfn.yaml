@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: |
+  Autoscaling group with load balancer and policy
+
+Parameters:
+  
+  pSubnetList:
+    Description: List of subnets
+    Type: List<AWS::EC2::Subnet::Id>
+
+Resources:
+  
+   rLoadBalancerSecurityGroup:
+    Type: AWS::EC2 ::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTP
+      GroupName: lb-enable-http
+      SecurityGroupIngress: 
+        - CidrIp: 0.0.0.0/0
+          ToPort: 80
+          FromPort: 80
+          IpProtocol: tcp  
+
+   rLoadBalancer: 
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Type: application
+      Name: zeliha-lb
+      Scheme: internet-facing
+      IpAddressType: ipv4
+      SecurityGroups: 
+        - !GetAtt rLoadBalancerSecurityGroup.GroupId
+      Subnets: !Ref pSubnetList
+
+   rListener:  
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref rLoadBalancer
+      Protocol: HTTP
+      Port: 80
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: String
+        
+
+
+
+
+
+
+
+
+
+
+
+
+Outputs:
